@@ -60,4 +60,52 @@ class PostRepository {
             }
         }
     }
+
+    suspend fun updatePostFully(id: Int, post: PostBody): Resource<Post> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = postService.updatePostFully(id = id, post = post)
+
+                if (response.isSuccessful) {
+                    Resource.Success(response.body())
+                } else {
+                    Resource.Error(response.message())
+                }
+            } catch (exception: Exception) {
+                Resource.Error(exception.message ?: "An error occurred")
+            }
+        }
+    }
+
+    suspend fun updatePostPartially(id: Int, post: PostBody): Resource<Post> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = postService.updatePostPartially(id = id, post = post)
+
+                if (response.isSuccessful) {
+                    Resource.Success(response.body())
+                } else {
+                    Resource.Error(response.message())
+                }
+            } catch (exception: Exception) {
+                Resource.Error(exception.message ?: "An error occurred")
+            }
+        }
+    }
+
+    suspend fun deletePost(id: Int): Resource<Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = postService.deletePost(id = id)
+
+                if (response.isSuccessful) {
+                    Resource.Success(response.body())
+                } else {
+                    Resource.Error(response.message())
+                }
+            } catch (exception: Exception) {
+                Resource.Error(exception.message ?: "An error occurred")
+            }
+        }
+    }
 }
