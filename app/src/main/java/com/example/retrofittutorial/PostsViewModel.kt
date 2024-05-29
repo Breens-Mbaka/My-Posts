@@ -90,6 +90,74 @@ class PostsViewModel : ViewModel() {
         }
     }
 
+    fun createPost() {
+        viewModelScope.launch {
+            _postsUiState.update {
+                it.copy(
+                    isLoading = true,
+                    errorMessage = ""
+                )
+            }
+
+            when (val result =
+                postRepository.createPost(
+                    title = postsUiState.value.postTitle,
+                    body = postsUiState.value.postBody
+                )) {
+                is Resource.Success -> {
+                    _postsUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            posts = if (result.data != null) listOf(result.data) else it.posts,
+                            postTitle = "",
+                            postBody = "",
+                            showCreatePostDialog = false
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _postsUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = result.message
+                                ?: "Something went wrong, please try again",
+                            showCreatePostDialog = false
+                        )
+                    }
+                }
+
+                else -> {
+                    postsUiState
+                }
+            }
+        }
+    }
+
+    fun setPostTitle(title: String) {
+        _postsUiState.update {
+            it.copy(
+                postTitle = title
+            )
+        }
+    }
+
+    fun setPostBody(body: String) {
+        _postsUiState.update {
+            it.copy(
+                postBody = body
+            )
+        }
+    }
+
+    fun showCreatePostDialog(showCreatePostDialog: Boolean) {
+        _postsUiState.update {
+            it.copy(
+                showCreatePostDialog = showCreatePostDialog
+            )
+        }
+    }
+
     fun setSearchQuery(query: String) {
         _postsUiState.update {
             it.copy(
@@ -117,5 +185,8 @@ data class PostsUiState(
     val isLoading: Boolean = false,
     val posts: List<Post> = emptyList(),
     val errorMessage: String = "",
-    val searchQuery: String = ""
+    val searchQuery: String = "",
+    val postTitle: String = "",
+    val postBody: String = "",
+    val showCreatePostDialog: Boolean = false
 )

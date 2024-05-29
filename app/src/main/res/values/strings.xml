@@ -2,4 +2,8 @@
     <string name="app_name">RetrofitTutorial</string>
     <string name="retry">Retry</string>
     <string name="search_by_id">Search by ID</string>
+    <string name="post_title">Post Title</string>
+    <string name="post_body">Post Body</string>
+    <string name="submit">Submit</string>
+    <string name="dismiss">Dismiss</string>
 </resources>
