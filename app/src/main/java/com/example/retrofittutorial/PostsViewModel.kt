@@ -53,6 +53,61 @@ class PostsViewModel : ViewModel() {
         }
     }
 
+    fun getPostById() {
+        viewModelScope.launch {
+            _postsUiState.update {
+                it.copy(
+                    isLoading = true,
+                    errorMessage = ""
+                )
+            }
+
+            when (val result =
+                postRepository.getPostById(id = postsUiState.value.searchQuery.toInt())) {
+                is Resource.Success -> {
+                    _postsUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            posts = if (result.data != null) listOf(result.data) else it.posts
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _postsUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = result.message
+                                ?: "Something went wrong, please try again"
+                        )
+                    }
+                }
+
+                else -> {
+                    postsUiState
+                }
+            }
+        }
+    }
+
+    fun setSearchQuery(query: String) {
+        _postsUiState.update {
+            it.copy(
+                searchQuery = query
+            )
+        }
+    }
+
+    fun refresh() {
+        _postsUiState.value = PostsUiState(
+            posts = emptyList(),
+            errorMessage = "",
+            searchQuery = ""
+        )
+
+        getPosts()
+    }
+
     init {
         getPosts()
     }
@@ -61,5 +116,6 @@ class PostsViewModel : ViewModel() {
 data class PostsUiState(
     val isLoading: Boolean = false,
     val posts: List<Post> = emptyList(),
-    val errorMessage: String = ""
+    val errorMessage: String = "",
+    val searchQuery: String = ""
 )

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RetrofitTutorial</string>
     <string name="retry">Retry</string>
+    <string name="search_by_id">Search by ID</string>
 </resources>

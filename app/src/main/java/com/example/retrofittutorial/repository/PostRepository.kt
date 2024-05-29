@@ -22,4 +22,20 @@ class PostRepository {
             }
         }
     }
+
+    suspend fun getPostById(id: Int): Resource<Post> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = postService.getPostById(id = id)
+
+                if (response.isSuccessful) {
+                    Resource.Success(response.body())
+                } else {
+                    Resource.Error(response.message())
+                }
+            } catch (exception: Exception) {
+                Resource.Error(exception.message ?: "An error occurred")
+            }
+        }
+    }
 }
