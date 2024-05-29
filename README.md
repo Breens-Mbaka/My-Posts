@@ -3,9 +3,9 @@ A sample app to demonstrate the CRUD operations using Retrofit
 
 ## Demo
 <p>
-<img src="screenshots/image1.jpeg" width="250"/>
-<img src="screenshots/image2.jpeg" width="250"/>
-<img src="screenshots/image3.jpeg" width="250"/>
+<img src="screenshots/image1.png" width="250"/>
+<img src="screenshots/image2.png" width="250"/>
+<img src="screenshots/image3.png" width="250"/>
 </p>
 
 # License
